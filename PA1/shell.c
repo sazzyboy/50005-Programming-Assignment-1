@@ -9,13 +9,16 @@ int shellFind(char **args)
   printf("shellFind is called!\n");
 
   /** TASK 4 **/
-  // 1. Execute the binary program 'find' in shellPrograms using execvp system call
-  // 2. Check if execvp is successful by checking its return value
+  int resultofthis = execvp("/Users/amrishsandhu/Documents/GitHub/50005-Programming-Assignment-1/PA1/shellPrograms/find",args);
+
+  if (resultofthis==-1){   // 2. Check if execvp is successful by checking its return value
   // 3. A successful execvp never returns, while a failed execvp returns -1
   // 4. Print some kind of error message if it returns -1
-  // 5. return 1 to the caller of shellFind if execvp fails to allow loop to continue
 
-  return 1;
+    perror("CSESHELL ERROR YO");
+  }
+  return 1;   // 5. return 1 to the caller of shellFind if execvp fails to allow loop to continue
+
 }
 
 /**
@@ -31,7 +34,11 @@ int shellDisplayFile(char **args)
   // 3. A successful execvp never returns, while a failed execvp returns -1
   // 4. Print some kind of error message if it returns -1
   // 5. return 1 to the caller of shellDisplayFile if execvp fails to allow loop to continue
+  int resultofthis = execvp("/Users/amrishsandhu/Documents/GitHub/50005-Programming-Assignment-1/PA1/shellPrograms/display",args);
 
+  if (resultofthis==-1){
+    perror("CSESHELL ERROR YO");
+  }
   return 1;
 }
 
@@ -49,7 +56,11 @@ int shellListDirAll(char **args)
   // 3. A successful execvp never returns, while a failed execvp returns -1
   // 4. Print some kind of error message if it returns -1
   // 5. return 1 to the caller of shellListDirAll if execvp fails to allow loop to continue
+  int resultofthis = execvp("/Users/amrishsandhu/Documents/GitHub/50005-Programming-Assignment-1/PA1/shellPrograms/listdirall",args);
 
+  if (resultofthis==-1){
+    perror("CSESHELL ERROR YO");
+  }
   return 1;
 }
 
@@ -66,7 +77,11 @@ int shellListDir(char **args)
   // 3. A successful execvp never returns, while a failed execvp returns -1
   // 4. Print some kind of error message if it returns -1
   // 5. return 1 to the caller of shellListDir
+  int resultofthis = execvp("/Users/amrishsandhu/Documents/GitHub/50005-Programming-Assignment-1/PA1/shellPrograms/listdir",args);
 
+  if (resultofthis==-1){
+    perror("CSESHELL ERROR YO");
+  }
   return 1;
 }
 
@@ -84,7 +99,11 @@ int shellCountLine(char **args)
   // 3. A successful execvp never returns, while a failed execvp returns -1
   // 4. Print some kind of error message if it returns -1
   // 5. return 1 to the caller of shellCountLine if execvp fails to allow loop to continue
+  int resultofthis = execvp("/Users/amrishsandhu/Documents/GitHub/50005-Programming-Assignment-1/PA1/shellPrograms/countline",args);
 
+  if (resultofthis==-1){
+    perror("CSESHELL ERROR YO");
+  }
   return 1;
 }
 
@@ -101,7 +120,11 @@ int shellSummond(char **args)
   // 3. A successful execvp never returns, while a failed execvp returns -1
   // 4. Print some kind of error message if it returns -1
   // 5. return 1 to the caller of shellDaemonize if execvp fails to allow loop to continue
+  int resultofthis = execvp("/Users/amrishsandhu/Documents/GitHub/50005-Programming-Assignment-1/PA1/shellPrograms/summond",args);
 
+  if (resultofthis==-1){
+    perror("CSESHELL ERROR YO");
+  }
   return 1;
 }
 
@@ -120,7 +143,11 @@ int shellCheckDaemon(char **args)
   // 3. A successful execvp never returns, while a failed execvp returns -1
   // 4. Print some kind of error message if it returns -1
   // 5. return 1 to the caller of shellCheckDaemon if execvp fails to allow loop to continue
+  int resultofthis = execvp("/Users/amrishsandhu/Documents/GitHub/50005-Programming-Assignment-1/PA1/shellPrograms/checkdaemon",args);
 
+  if (resultofthis==-1){
+    perror("CSESHELL ERROR YO");
+  }
   return 1;
 }
 
@@ -248,15 +275,39 @@ int shellExecuteInput(char **args)
 {
   /** TASK 3 **/
 
-  // 1. Check if args[0] is NULL. If it is, an empty command is entered, return 1
-  // 2. Otherwise, check if args[0] is in any of our builtin_commands, and that it is NOT cd, help, exit, or usage.
-  // 3. If conditions in (2) are satisfied, perform fork(). Check if fork() is successful.
-  // 4. For the child process, execute the appropriate functions depending on the command in args[0]. Pass char ** args to the function.
   // 5. For the parent process, wait for the child process to complete and fetch the child's return value.
   // 6. Return the child's return value to the caller of shellExecuteInput
   // 7. If args[0] is not in builtin_command, print out an error message to tell the user that command doesn't exist and return 1
+  if (args[0]==NULL){   // 1. Check if args[0] is NULL. If it is, an empty command is entered, return 1
 
-  return 1;
+    return 1;
+  }
+  pid_t pid;
+  int stat_loc; //provided within the document
+
+  for (int i=0; i< numOfBuiltinFunctions(); i++){   // 2. Otherwise, check if args[0] is in any of our builtin_commands, and that it is NOT cd, help, exit, or usage.
+    // i will use strcmp which compares the strings of the input argument and inbuilt commands, if they identical strcmp will return 0
+    if (strcmp(builtin_commands[i], args[0])==0 && i<4){ //has to be less than 4 since the first 4 are cd,help,exit,usage
+      return builtin_commandFunc[i](args);
+    }
+    else if (strcmp(builtin_commands[i], args[0])==0 && i>=4){
+      pid = fork();   // 3. If conditions in (2) are satisfied, perform fork(). Check if fork() is successful.
+      if (pid ==0){
+        builtin_commandFunc[i](args);   // 4. For the child process, execute the appropriate functions depending on the command in args[0]. Pass char ** args to the function.
+        exit(1);
+      }
+      else if (pid>0){
+        waitpid(pid, &stat_loc,WUNTRACED);
+        return WEXITSTATUS(stat_loc);
+      }
+      else {
+        perror("CSESHELL, ERROR");
+        return 1;
+      }
+    }
+}
+printf("CSESHELL HAS RECEIVED AN INVALID COMMAND HELLO HELLO.\n");
+return 1;
 }
 
 /**
@@ -267,12 +318,15 @@ char *shellReadLine(void)
   /** TASK 1 **/
   // read one line from stdin using getline()
 
-  // 1. Allocate a memory space to contain the string of input from stdin using malloc. Malloc should return a char* that persists even after this function terminates.
-  // 2. Check that the char* returned by malloc is not NULL
-  // 3. Fetch an entire line from input stream stdin using getline() function. getline() will store user input onto the memory location allocated in (1)
-  // 4. Return the char*
+    size_t size = 32;
+    char*buffer = malloc(sizeof(char)*size);   // 1. Allocate a memory space to contain the string of input from stdin using malloc. Malloc should return a char* that persists even after this function terminates.
 
-  return NULL;
+    if(buffer==NULL){   // 2. Check that the char* returned by malloc is not NULL
+      perror("CSESHELL, ERROR");
+      exit(1);
+    }
+    getline(&buffer,&size,stdin);   // 3. Fetch an entire line from input stream stdin using getline() function. getline() will store user input onto the memory location allocated in (1)
+    return buffer;   // 4. Return the char*
 }
 
 /**
@@ -281,14 +335,28 @@ char *shellReadLine(void)
 
 char **shellTokenizeInput(char *line)
 {
-
+//useful link to remind me https://www.geeksforgeeks.org/double-pointer-pointer-pointer-c/
   /** TASK 2 **/
-  // 1. Allocate a memory space to contain pointers (addresses) to the first character of each word in *line. Malloc should return char** that persists after the function terminates.
-  // 2. Check that char ** that is returend by malloc is not NULL
-  // 3. Tokenize the *line using strtok() function
-  // 4. Return the char **
 
-  return NULL;
+  // 1. Allocate a memory space to contain pointers (addresses) to the first character of each word in *line. Malloc should return char** that persists after the function terminates.
+  char **pointerpointer =malloc(sizeof(char*)*8); 
+  if(pointerpointer==NULL){   // 2. Check that char ** that is returend by malloc is not NULL
+    perror("CSESHELL,ERROR");
+    exit(1);
+  }
+  char *token=strtok(line,SHELL_INPUT_DELIM);
+  int index = 0;
+  pointerpointer[index]=token;
+  index++;
+
+  while(token!=NULL){
+    token=strtok(NULL, SHELL_INPUT_DELIM);   // 3. Tokenize the *line using strtok() function
+    pointerpointer[index]=token;
+    index++;
+  } 
+  pointerpointer[index]=NULL;
+  return pointerpointer;   // 4. Return the char **
+
 }
 
 /**
@@ -319,13 +387,21 @@ void shellLoop(void)
 
 }
 
-int main(int argc, char **argv)
-{
+int main(int argc, char **argv){
 
-  printf("Shell Run successful. Running now: \n");
+printf("Shell Run successful. Running now: \n");
+
+char* line = shellReadLine();
+printf("The fetched line is : %s \n", line);
+ 
+char** args = shellTokenizeInput(line);
+printf("The first token is %s \n", args[0]);
+printf("The second token is %s \n", args[1]);
+
+shellExecuteInput(args);
 
   // Run command loop
-  shellLoop();
+  //shellLoop();
 
   return 0;
 }
