@@ -375,33 +375,32 @@ void shellLoop(void)
   //write a loop where you do the following: 
 
   // 1. print the message prompt
+  printf("CSESHELL MESSAGE PROMPT:");
   // 2. clear the buffer and move the output to the console using fflush
   // 3. invoke shellReadLine() and store the output at line
+  line=shellReadLine();
   // 4. invoke shellTokenizeInput(line) and store the output at args**
+  args=shellTokenizeInput(line);
   // 5. execute the tokens using shellExecuteInput(args)
-
+  status = shellExecuteInput(args);
   // 6. free memory location containing the strings of characters
+  free(line);
   // 7. free memory location containing char* to the first letter of each word in the input string
+  free(args);
   // 8. check if shellExecuteInput returns 1. If yes, loop back to Step 1 and prompt user with new input. Otherwise, exit the shell. 
-
-
+  if (status){
+    shellLoop();
+  }
+return;
 }
 
-int main(int argc, char **argv){
-
-printf("Shell Run successful. Running now: \n");
-
-char* line = shellReadLine();
-printf("The fetched line is : %s \n", line);
+int main(int argc, char **argv)
+{
  
-char** args = shellTokenizeInput(line);
-printf("The first token is %s \n", args[0]);
-printf("The second token is %s \n", args[1]);
-
-shellExecuteInput(args);
-
-  // Run command loop
-  //shellLoop();
-
-  return 0;
+ printf("Shell Run successful. Running now: \n");
+ 
+ // Run command loop
+ shellLoop();
+ return 0;
 }
+
