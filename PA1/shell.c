@@ -9,7 +9,7 @@ int shellFind(char **args)
   printf("shellFind is called!\n");
 
   /** TASK 4 **/
-  int resultofthis = execvp("/Users/amrishsandhu/Documents/GitHub/50005-Programming-Assignment-1/PA1/shellPrograms/find",args);
+  int resultofthis = execvp("PA1/shellPrograms/find",args);
 
   if (resultofthis==-1){   // 2. Check if execvp is successful by checking its return value
   // 3. A successful execvp never returns, while a failed execvp returns -1
@@ -34,7 +34,7 @@ int shellDisplayFile(char **args)
   // 3. A successful execvp never returns, while a failed execvp returns -1
   // 4. Print some kind of error message if it returns -1
   // 5. return 1 to the caller of shellDisplayFile if execvp fails to allow loop to continue
-  int resultofthis = execvp("/Users/amrishsandhu/Documents/GitHub/50005-Programming-Assignment-1/PA1/shellPrograms/display",args);
+  int resultofthis = execvp("PA1/shellPrograms/display",args);
 
   if (resultofthis==-1){
     perror("CSESHELL ERROR YO");
@@ -56,7 +56,7 @@ int shellListDirAll(char **args)
   // 3. A successful execvp never returns, while a failed execvp returns -1
   // 4. Print some kind of error message if it returns -1
   // 5. return 1 to the caller of shellListDirAll if execvp fails to allow loop to continue
-  int resultofthis = execvp("/Users/amrishsandhu/Documents/GitHub/50005-Programming-Assignment-1/PA1/shellPrograms/listdirall",args);
+  int resultofthis = execvp("PA1/shellPrograms/listdirall",args);
 
   if (resultofthis==-1){
     perror("CSESHELL ERROR YO");
@@ -77,7 +77,7 @@ int shellListDir(char **args)
   // 3. A successful execvp never returns, while a failed execvp returns -1
   // 4. Print some kind of error message if it returns -1
   // 5. return 1 to the caller of shellListDir
-  int resultofthis = execvp("/Users/amrishsandhu/Documents/GitHub/50005-Programming-Assignment-1/PA1/shellPrograms/listdir",args);
+  int resultofthis = execvp("PA1/shellPrograms/listdir",args);
 
   if (resultofthis==-1){
     perror("CSESHELL ERROR YO");
@@ -99,7 +99,7 @@ int shellCountLine(char **args)
   // 3. A successful execvp never returns, while a failed execvp returns -1
   // 4. Print some kind of error message if it returns -1
   // 5. return 1 to the caller of shellCountLine if execvp fails to allow loop to continue
-  int resultofthis = execvp("/Users/amrishsandhu/Documents/GitHub/50005-Programming-Assignment-1/PA1/shellPrograms/countline",args);
+  int resultofthis = execvp("PA1/shellPrograms/countline",args);
 
   if (resultofthis==-1){
     perror("CSESHELL ERROR YO");
@@ -120,7 +120,7 @@ int shellSummond(char **args)
   // 3. A successful execvp never returns, while a failed execvp returns -1
   // 4. Print some kind of error message if it returns -1
   // 5. return 1 to the caller of shellDaemonize if execvp fails to allow loop to continue
-  int resultofthis = execvp("/Users/amrishsandhu/Documents/GitHub/50005-Programming-Assignment-1/PA1/shellPrograms/summond",args);
+  int resultofthis = execvp("PA1/shellPrograms/summond",args);
 
   if (resultofthis==-1){
     perror("CSESHELL ERROR YO");
@@ -143,7 +143,7 @@ int shellCheckDaemon(char **args)
   // 3. A successful execvp never returns, while a failed execvp returns -1
   // 4. Print some kind of error message if it returns -1
   // 5. return 1 to the caller of shellCheckDaemon if execvp fails to allow loop to continue
-  int resultofthis = execvp("/Users/amrishsandhu/Documents/GitHub/50005-Programming-Assignment-1/PA1/shellPrograms/checkdaemon",args);
+  int resultofthis = execvp("PA1/shellPrograms/checkdaemon",args);
 
   if (resultofthis==-1){
     perror("CSESHELL ERROR YO");
